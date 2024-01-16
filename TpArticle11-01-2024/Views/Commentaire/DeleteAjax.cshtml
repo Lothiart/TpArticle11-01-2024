@@ -1,0 +1,37 @@
+﻿<script>
+    // Événement de clic sur le bouton de suppression
+    document.getElementById("deleteButton").addEventListener("click", function (event) {
+        // Annuler la soumission du formulaire
+        event.preventDefault();
+
+        // Obtenir l'identifiant du commentaire à supprimer
+        var commentId = document.getElementById("commentId").value;
+
+        // Créer un objet JSON avec les données du commentaire
+        var data = {
+            id: commentId,
+        };
+
+        // Envoyer les données au serveur en Ajax
+        $.ajax({
+            url: "/comment/deleteajax",
+            type: "post",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (response) {
+                // Si la réponse est un succès
+                if (response.success) {
+                    // Supprimer le commentaire de la vue
+                    document.getElementById("comment").remove();
+
+                    // Afficher un message de confirmation
+                    alert("Le commentaire a été supprimé avec succès");
+                }
+            },
+            error: function (error) {
+                // Afficher un message d'erreur
+                alert(error.responseText);
+            },
+        });
+    });
+</script>

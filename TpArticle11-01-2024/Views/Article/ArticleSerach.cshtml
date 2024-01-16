@@ -1,0 +1,37 @@
+﻿@* @model IEnumerable<Article>
+
+<h1>Recherche d'articles</h1>
+
+<form action="/article/search" method="post">
+    <input type="text" name="searchTerm" placeholder="Mot-clé">
+    <button type="submit">Rechercher</button>
+</form>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Thème</th>
+                <th>Auteur</th>
+                <th>Contenu</th>
+                <th>Date de création</th>
+                <th>Date de modification</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var article in Model)
+            {
+                <tr>
+                    <td>@article.Id</td>
+                    <td>@article.Theme</td>
+                    <td>@article.Auteur</td>
+                    <td>@article.Contenu</td>
+                    <td>@article.DateDeCreation</td>
+                    <td>@article.DateDeModification</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+} *@

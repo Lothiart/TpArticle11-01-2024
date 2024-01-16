@@ -1,0 +1,57 @@
+﻿@model List<Article>
+
+@{
+    ViewData["Title"] = "Read";
+}
+
+<h1>Articles :</h1>
+
+<p>
+    <a asp-action="Create" asp-route-Id="">Créer un nouveau</a>
+</p>
+<form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Thème</th>
+                    <th>Auteur</th>
+                    <th>DateCreation</th>
+                    <th>DateModif</th>
+                    <th>Contenu</th>
+                </tr>
+            </thead>
+    
+    <tbody>
+            @foreach (var item in Model) {
+                <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Theme)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Auteur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateModification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Contenu)
+            </td>
+            <td>
+                        <button asp-action="Update" asp-route-Id="@item.Id">Update</button>
+
+                    <button asp-action="Delete" asp-route-Id="@item.Id">Delete</button>
+                        <button asp-action="Details" asp-route-Id="@item.Id">Details</button>
+                        
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</form>

@@ -1,0 +1,47 @@
+﻿@model Article
+
+<h1>Ajouter un article</h1>
+
+<form action="/article/save" method="post" id="articleForm">
+    <input type="text" name="theme" placeholder="Thème">
+    <input type="text" name="auteur" placeholder="Auteur">
+    <textarea name="contenu" placeholder="Contenu"></textarea>
+    <button type="submit">Ajouter</button>
+</form>
+
+<script>
+    // Événement de soumission du formulaire
+    document.getElementById("articleForm").addEventListener("submit", function (event) {
+        // Annuler la soumission du formulaire
+        event.preventDefault();
+
+        // Créer un objet JSON avec les données du formulaire
+        var data = {
+            theme: document.getElementById("theme").value,
+            auteur: document.getElementById("auteur").value,
+            contenu: document.getElementById("contenu").value,
+        };
+
+        // Envoyer les données au serveur en Ajax
+        $.ajax({
+            url: "/article/save",
+            type: "post",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (response) {
+                // Si la réponse est un succès
+                if (response.success) {
+                    // Afficher un message de confirmation
+                    alert("L'article a été ajouté avec succès");
+
+                    // Recharger la page
+                    location.reload();
+                }
+            },
+            error: function (error) {
+                // Afficher un message d'erreur
+                alert(error.responseText);
+            },
+        });
+    });
+</script>

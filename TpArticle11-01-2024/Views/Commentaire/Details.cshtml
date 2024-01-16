@@ -1,0 +1,48 @@
+﻿@model Commentaire
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Commentaire</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Auteur)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Auteur)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCreation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateModification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateModification)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Contenu)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Contenu)
+        </dd>
+    </dl>
+</div>
+<div>
+    
+    <a asp-action="Details" asp-controller="Article" asp-route-Id="@Model.MyArticle">Back to List</a>
+</div>

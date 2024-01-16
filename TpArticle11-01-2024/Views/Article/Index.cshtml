@@ -1,0 +1,12 @@
+﻿@model Article
+
+@if (Model == null)
+{
+    <h1>Aucun article disponible</h1>
+}
+else
+{
+    <h1>@Model.Theme</h1>
+    <h2>Par @Model.Auteur</h2>
+    <p>@Model.Contenu</p>
+}
