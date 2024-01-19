@@ -16,30 +16,30 @@ namespace Business
         {
             _CommentaireRepository = CommentaireRepository;
         }
-        public async Task<Commentaire> GetCommentaire(int id)
+        public async Task<Commentaire> Read(int id)
         {
-            return await _CommentaireRepository.GetCommentaire(id);
+            return await _CommentaireRepository.Read(id);
         }
-        public async Task<List<Commentaire>> GetAllCommentaire(int MyArticle)
+        public async Task<List<Commentaire>> ReadAll(int MyArticle)
         {
-            return await _CommentaireRepository.GetAllCommentaire(MyArticle);
+            return await _CommentaireRepository.ReadAll(MyArticle);
         }
-        public async Task CreateCommentaire(Commentaire Commentaire)
+        public async Task<bool> Create(Commentaire Commentaire)
         {
 
-            await _CommentaireRepository.CreateCommentaire(Commentaire);
+            return await _CommentaireRepository.Create(Commentaire);
 
         }
-        public async Task UpdateCommentaire(Commentaire Commentaire)
+        public async Task<bool> Update(Commentaire Commentaire)
         {
             //new Commentaire(Id,Nom,Prenom,DateNaissance,Adresse,CodePostal,Ville);
-            await _CommentaireRepository.UpdateCommentaire(Commentaire);
+            return await _CommentaireRepository.Update(Commentaire);
 
 
         }
-        public async Task DeleteCommentaire(int id)
+        public async Task<bool> Delete(int id)
         {
-            await _CommentaireRepository.DeleteCommentaire(id);
+            return await _CommentaireRepository.Delete(id);
         }
 
     }

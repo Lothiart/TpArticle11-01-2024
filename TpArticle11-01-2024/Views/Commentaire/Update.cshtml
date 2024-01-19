@@ -13,8 +13,8 @@
         
         <form asp-action="UpdateValid">
     <br />
-            
-    
+            <input asp-for="Id" value="@Model.Id" type="hidden" />
+            <input asp-for="ArticleId" value="@Model.ArticleId" type="hidden" />
             
     <div>
         <label asp-for="Contenu"></label>

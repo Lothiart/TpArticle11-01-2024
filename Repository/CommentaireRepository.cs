@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Repositories.Contracts;
 using Business.Contracts;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 namespace Repositories
 {
     public class CommentaireRepository : ICommentaireRepository
@@ -20,7 +21,7 @@ namespace Repositories
 
 
 
-        public async Task<Commentaire> GetCommentaire(int id)
+        public async Task<Commentaire> Read(int id)
         {
 
             //try
@@ -35,14 +36,14 @@ namespace Repositories
             //    catch (Exception e) { Console.WriteLine("erreur : " + e.Message); }
 
         }
-        public async Task<List<Commentaire>> GetAllCommentaire(int MyArticle)
+        public async Task<List<Commentaire>> ReadAll(int MyArticle)
         {
             //return await _context.Comments.ToListAsync();
             List<Commentaire> comments = new List<Commentaire>();
 
             foreach (var comment in _context.Comments)
             {
-                if (comment.MyArticle == MyArticle)
+                if (comment.ArticleId == MyArticle)
                 {
                     comments.Add(comment);
                 }
@@ -51,35 +52,49 @@ namespace Repositories
             return comments;
             
         }
-        public async Task CreateCommentaire(Commentaire Commentaire)
+        public async Task<bool> Create(Commentaire Commentaire)
         {
-            
+            try { 
             Commentaire.DateCreation = DateTime.Now;
             Commentaire.DateModification = DateTime.Now;
             await _context.Comments.AddAsync(Commentaire);
             await _context.SaveChangesAsync();
+            return true;
         }
-        public async Task UpdateCommentaire(Commentaire Commentaire)
+            catch (Exception ex)
+            {
+                return false;
+            }
+}
+        public async Task<bool> Update(Commentaire Commentaire)
         {
             try
             {
                 var CommentaireToEdit = await _context.Comments.FirstOrDefaultAsync(a => a.Id == Commentaire.Id);
                 CommentaireToEdit.DateModification = DateTime.Now;
                 CommentaireToEdit.Contenu = Commentaire.Contenu;
-                CommentaireToEdit.MyArticle = Commentaire.MyArticle;
+                CommentaireToEdit.ArticleId = Commentaire.ArticleId;
                 Commentaire = CommentaireToEdit;
                 await _context.SaveChangesAsync();
+                    return true;
             }
             catch (Exception ex)
             {
-
+                return false;
             }
         }
-        public async Task DeleteCommentaire(int Id)
+        public async Task<bool> Delete(int Id)
         {
-            _context.Comments.Remove(await GetCommentaire(Id));
+            try { 
+            _context.Comments.Remove(await Read(Id));
             await _context.SaveChangesAsync();
+            return true;
         }
+            catch (Exception ex)
+            {
+                return false;
+            }
+}
 
         //public Commentaire Rechercher(int id)
         //{

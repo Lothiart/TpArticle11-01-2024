@@ -59,8 +59,8 @@ namespace Repositories.Migrations
                             Id = 1,
                             Auteur = "testAuteur",
                             Contenu = "testcontenu",
-                            DateCreation = new DateTime(2024, 1, 12, 16, 44, 16, 951, DateTimeKind.Local).AddTicks(5616),
-                            DateModification = new DateTime(2024, 1, 12, 16, 44, 16, 951, DateTimeKind.Local).AddTicks(5658),
+                            DateCreation = new DateTime(2024, 1, 19, 10, 55, 4, 756, DateTimeKind.Local).AddTicks(111),
+                            DateModification = new DateTime(2024, 1, 19, 10, 55, 4, 756, DateTimeKind.Local).AddTicks(164),
                             Theme = "testTheme"
                         });
                 });
@@ -73,7 +73,7 @@ namespace Repositories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ArticleId")
+                    b.Property<int>("ArticleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Auteur")
@@ -92,26 +92,9 @@ namespace Repositories.Migrations
                     b.Property<DateTime>("DateModification")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MyArticle")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ArticleId");
-
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Entities.Commentaire", b =>
-                {
-                    b.HasOne("Entities.Article", null)
-                        .WithMany("Commentaires")
-                        .HasForeignKey("ArticleId");
-                });
-
-            modelBuilder.Entity("Entities.Article", b =>
-                {
-                    b.Navigation("Commentaires");
                 });
 #pragma warning restore 612, 618
         }

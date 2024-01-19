@@ -19,7 +19,7 @@ namespace Repositories
         }
         
         
-        public async Task<Article> GetArticle(int id)
+        public async Task<Article> Read(int id)
         {
            
             //try
@@ -34,22 +34,30 @@ namespace Repositories
         //    catch (Exception e) { Console.WriteLine("erreur : " + e.Message); }
             
         }
-        public async Task<List<Article>> GetAllArticle()
+        public async Task<List<Article>> ReadAll()
         {
            
             
             return await _context.Articles.ToListAsync();
             
         }
-        public async Task CreateArticle(Article article)
+        public async Task<bool> Create(Article article)
         {
             //article.Id = _context.Articles.Count() + 1;
+            try { 
               article.DateCreation = DateTime.Now;
               article.DateModification = DateTime.Now;
              await _context.Articles.AddAsync(article);
             await _context.SaveChangesAsync();
+            return true;
+            }catch
+            (Exception ex)
+            {
+                return false; 
+            }
+            
         }
-        public async Task UpdateArticle(Article article)
+        public async Task<bool> Update(Article article)
         {
             try
             {
@@ -59,17 +67,25 @@ namespace Repositories
                 articleToEdit.Theme = article.Theme;
                 article = articleToEdit;
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
-               
+                return false;
             }
         }
-        public async Task DeleteArticle(int Id)
+        public async Task<bool> Delete(int Id)
         {
-            _context.Articles.Remove(await GetArticle(Id));
+            try { 
+            _context.Articles.Remove(await Read(Id));
             await _context.SaveChangesAsync();
+            return true;
         }
+            catch (Exception ex)
+            {
+                return false;
+            }
+}
 
         //public article Rechercher(int id)
         //{

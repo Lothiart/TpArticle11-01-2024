@@ -11,16 +11,16 @@ namespace Repositories.Contracts
     public interface IArticleRepository
     {
         
-        public Task<Article> GetArticle(int id);
+        public Task<Article> Read(int id);
 
-        public Task<List<Article>> GetAllArticle();
+        public Task<List<Article>> ReadAll();
 
-        public Task CreateArticle(Article article);
+        public Task<bool> Create(Article article);
 
-        public Task UpdateArticle(Article article);
+        public Task<bool> Update(Article article);
 
 
-        public Task DeleteArticle(int Id);
+        public Task<bool> Delete(int Id);
 
 
     }

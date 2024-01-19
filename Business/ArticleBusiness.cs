@@ -16,30 +16,30 @@ namespace Business
         {
             _ArticleRepository = ArticleRepository;
         }
-        public async Task<Article> GetArticle(int id)
+        public async Task<Article> Read(int id)
         {
-            return await _ArticleRepository.GetArticle(id);
+            return await _ArticleRepository.Read(id);
         }
-        public async Task<List<Article>> GetAllArticle()
+        public async Task<List<Article>> ReadAll()
         {
-             return await _ArticleRepository.GetAllArticle();
+             return await _ArticleRepository.ReadAll();
         }
-        public async Task CreateArticle(Article article)
+        public async Task<bool> Create(Article article)
         {
             
-            await _ArticleRepository.CreateArticle(article);
+            return await _ArticleRepository.Create(article);
             
         }
-        public async Task UpdateArticle(Article article)
+        public async Task<bool> Update(Article article)
         {
             //new Article(Id,Nom,Prenom,DateNaissance,Adresse,CodePostal,Ville);
-            await _ArticleRepository.UpdateArticle(article);
+            return await _ArticleRepository.Update(article);
 
 
         }
-        public async Task DeleteArticle(int id)
+        public async Task<bool> Delete(int id)
         {
-            await _ArticleRepository.DeleteArticle(id);
+            return await _ArticleRepository.Delete(id);
         }
 
     }

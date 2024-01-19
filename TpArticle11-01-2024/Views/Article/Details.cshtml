@@ -34,7 +34,7 @@
 <h1>Commentaires :</h1>
 
 <p>
-    <a asp-action="Create" asp-route-MyArticle="@Model.Article.Id" asp-controller="Commentaire">Créer un nouveau</a>
+    <a asp-action="Create" asp-route-ArticleId="@Model.Article.Id" asp-controller="Commentaire">Créer un nouveau</a>
 </p>
 <form>
     <table class="table">
@@ -68,7 +68,7 @@
                         @Html.DisplayFor(modelItem => item.Contenu)
                     </td>
                     <td>
-                        <button asp-action="Update" asp-route-Id="@item.Id" asp-controller="Commentaire">Update</button>
+                        <button asp-action="Update" asp-route-Id="@item.Id" asp-route-ArticleId="@Model.Article.Id" asp-controller="Commentaire">Update</button>
 
                         <button asp-action="Delete" asp-route-Id="@item.Id" asp-controller="Commentaire">Delete</button>
                         <button asp-action="Details" asp-route-Id="@item.Id" asp-controller="Commentaire">Details</button>

@@ -5,6 +5,7 @@ using TpArticle11_01_2024.Models;
 using Entities;
 
 using Business.Contracts;
+using Business;
 
 namespace TpArticle11_01_2024.Controllers
 {
@@ -31,7 +32,7 @@ namespace TpArticle11_01_2024.Controllers
             //Commentaire Commentaire = Commentaires.FirstOrDefault(m => m.Id == id);
 
             //return View(Commentaire);
-            return View(await _CommentaireBusiness.GetCommentaire(id));
+            return View(await _CommentaireBusiness.Read(id));
 
 
         }
@@ -43,12 +44,12 @@ namespace TpArticle11_01_2024.Controllers
 
         //}
 
-        public ActionResult Create(int MyArticle)
+        public ActionResult Create(int ArticleId)
         {
             Commentaire MyCom = new Commentaire();
             
-            MyCom.MyArticle = MyArticle;
-            
+            MyCom.ArticleId = ArticleId;
+            ViewBag.ArticleId = ArticleId;
             return View(MyCom);
         }
 
@@ -61,23 +62,27 @@ namespace TpArticle11_01_2024.Controllers
             //return RedirectToAction("Read");
             //try
             //{
-            await _CommentaireBusiness.CreateCommentaire(Commentaire);
+            await _CommentaireBusiness.Create(Commentaire);
             //}
             //catch (Exception ex)
             //{
             //    return (ex.);
             //}
 
-            return View(Commentaire);
-                //RedirectToAction("Details","Article",await _ArticleBusiness.GetArticle(Commentaire.MyArticle));
+            return RedirectToAction("Details", "Article", new { id = Commentaire.ArticleId });
+            //RedirectToAction("Details","Article",await _ArticleBusiness.GetArticle(Commentaire.ArticleId));
 
         }
 
 
         public async Task<ActionResult> Update(Commentaire Commentaire)
         {
-            await _CommentaireBusiness.UpdateCommentaire(Commentaire);
-            return View(Commentaire);
+
+
+            //await _CommentaireBusiness.Update(Commentaire);
+
+            var com =await _CommentaireBusiness.Read(Commentaire.Id);
+            return View(com);
 
         }
 
@@ -87,8 +92,8 @@ namespace TpArticle11_01_2024.Controllers
             //Commentaires.FirstOrDefault(m => m.Id == Commentaire.Id).DateModification = DateTime.Now;
             //Commentaires.FirstOrDefault(m => m.Id == Commentaire.Id).Contenu = Commentaire.Contenu;
             //return RedirectToAction("Read");
-            await _CommentaireBusiness.UpdateCommentaire(Commentaire);
-            return RedirectToAction("Details", "Article", Commentaire.MyArticle);
+            await _CommentaireBusiness.Update(Commentaire);
+            return RedirectToAction("Details", "Article",await _ArticleBusiness.Read(Commentaire.ArticleId));
 
         }
 
@@ -96,21 +101,59 @@ namespace TpArticle11_01_2024.Controllers
         public async Task<ActionResult> Delete(int id)
         {
 
-           Commentaire Com = await _CommentaireBusiness.GetCommentaire(id);
-            Article article = await _ArticleBusiness.GetArticle(Com.MyArticle);
+           Commentaire Com = await _CommentaireBusiness.Read(id);
+            Article article = await _ArticleBusiness.Read(Com.ArticleId);
                 
-            await _CommentaireBusiness.DeleteCommentaire(id);
+            await _CommentaireBusiness.Delete(id);
             
             return RedirectToAction("Details", "Article", article);
+
         }
-        public ActionResult DeleteAjax(int id)
-        {
-            // Supprimer le commentaire de la base de données
-            _CommentaireBusiness.DeleteCommentaire(id);
+        //public ActionResult DeleteAjax(int id)
+        //{
+        //    // Supprimer le commentaire de la base de données
+        //    _CommentaireBusiness.DeleteCommentaire(id);
             
 
-            // Retourner une réponse JSON
-            return Json(new { success = true });
+        //    // Retourner une réponse JSON
+        //    return Json(new { success = true });
+        //}
+        [HttpPost]
+        public async Task<IActionResult> DeleteFullAjax(int commentaireId)
+        {
+            bool res = false;
+            if (await _CommentaireBusiness.Delete(commentaireId))
+            {
+                res = true;
+                TempData["Message"] = "Suppr. Ajax et delete row";
+            }
+            else
+            {
+
+                TempData["Message"] = "";
+
+            }
+
+            return Json(res);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteAspAjax(int commentaireId)
+        {
+            var com = await _CommentaireBusiness.Read(commentaireId);
+            int articleId = com.ArticleId;
+
+            if (await _CommentaireBusiness.Delete(commentaireId))
+            {
+                TempData["Message"] = "Suppr. Ajax et MAJ vue partielle";
+            }
+            else
+            {
+                TempData["Message"] = "";
+            }
+
+            var coms = (await _CommentaireBusiness.ReadAll(articleId));
+
+            return PartialView("_DisplayCommentairesPartial", coms);
         }
 
     }

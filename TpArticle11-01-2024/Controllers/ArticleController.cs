@@ -43,8 +43,9 @@ namespace TpArticle11_01_2024.Controllers
 
 
             
-            var comments = await _CommentaireBusiness.GetAllCommentaire(article.Id);
-            var Article = await _articleBusiness.GetArticle(article.Id);
+            var comments = await _CommentaireBusiness.ReadAll(article.Id);
+            var Article = await _articleBusiness.Read(article.Id);
+            ViewBag.ArticleId = article.Id;
             return View(new ArticleViewModel { Article = Article, Comments = comments });
             //return View( await _CommentaireBusiness.GetAllCommentaire());
 
@@ -55,7 +56,7 @@ namespace TpArticle11_01_2024.Controllers
             //return View(Articles);
             
              //return View(await _articleBusiness.GetAllArticle());
-            return View(await _articleBusiness.GetAllArticle());
+            return View(await _articleBusiness.ReadAll());
         }
        
         public ActionResult Create()
@@ -72,7 +73,7 @@ namespace TpArticle11_01_2024.Controllers
             //return RedirectToAction("Read");
             //try
             //{
-            await _articleBusiness.CreateArticle(article);
+            await _articleBusiness.Create(article);
             //}
             //catch (Exception ex)
             //{
@@ -85,7 +86,7 @@ namespace TpArticle11_01_2024.Controllers
 
         public async Task<ActionResult> Update(Article article)
         {
-            await _articleBusiness.UpdateArticle(article);
+            await _articleBusiness.Update(article);
             return View(article);
 
         }
@@ -96,7 +97,7 @@ namespace TpArticle11_01_2024.Controllers
             //Articles.FirstOrDefault(m => m.Id == article.Id).DateModification = DateTime.Now;
             //Articles.FirstOrDefault(m => m.Id == article.Id).Contenu = article.Contenu;
             //return RedirectToAction("Read");
-            await _articleBusiness.UpdateArticle(article);
+            await _articleBusiness.Update(article);
             return RedirectToAction("Read");
 
         }
@@ -105,7 +106,7 @@ namespace TpArticle11_01_2024.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             //Articles.Remove(Articles.FirstOrDefault(m => m.Id == id));
-            await _articleBusiness.DeleteArticle(id);
+            await _articleBusiness.Delete(id);
             return RedirectToAction("Read");
         }
         //public Task<ActionResult> Search()
@@ -125,16 +126,16 @@ namespace TpArticle11_01_2024.Controllers
         //    // Retourner les résultats
         //    return View(articles);
         //}
-        public IActionResult Save(Article article)
-        {
-            // Enregistrer l'article dans la base de données
-            _articleBusiness.CreateArticle(article);
+        //public IActionResult Save(Article article)
+        //{
+        //    // Enregistrer l'article dans la base de données
+        //    _articleBusiness.CreateArticle(article);
             
 
-            // Retourner une réponse JSON
-            return Json(new { success = true });
-        }
-
+        //    // Retourner une réponse JSON
+        //    return Json(new { success = true });
+        //}
+        
 
 
     }

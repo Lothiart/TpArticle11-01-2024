@@ -20,6 +20,6 @@ namespace Entities
         public string Contenu { get; set; }
 
 
-        public int MyArticle { get; set; }
+        public int ArticleId { get; set; }
     }
 }

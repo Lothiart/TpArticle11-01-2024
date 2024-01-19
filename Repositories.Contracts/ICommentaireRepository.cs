@@ -9,16 +9,16 @@ namespace Repositories.Contracts
 {
     public  interface ICommentaireRepository
     {
-        public Task<Commentaire> GetCommentaire(int id);
+        public Task<Commentaire> Read(int id);
 
-        public Task<List<Commentaire>> GetAllCommentaire(int MyArticle);
+        public Task<List<Commentaire>> ReadAll(int MyArticle);
 
-        public Task CreateCommentaire(Commentaire Commentaire);
+        public Task<bool> Create(Commentaire Commentaire);
 
-        public Task UpdateCommentaire(Commentaire Commentaire);
+        public Task<bool> Update(Commentaire Commentaire);
 
 
-        public Task DeleteCommentaire(int Id);
+        public Task<bool> Delete(int Id);
 
 
     }
