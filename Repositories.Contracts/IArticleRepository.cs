@@ -22,7 +22,7 @@ namespace Repositories.Contracts
 
         public Task<bool> Delete(int Id);
 
-
+        public Task<List<Article>> Search(string str);
     }
 
 

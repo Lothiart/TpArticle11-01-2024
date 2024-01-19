@@ -109,16 +109,21 @@ namespace TpArticle11_01_2024.Controllers
             return RedirectToAction("Details", "Article", article);
 
         }
-        //public ActionResult DeleteAjax(int id)
-        //{
-        //    // Supprimer le commentaire de la base de données
-        //    _CommentaireBusiness.DeleteCommentaire(id);
-            
+		[HttpPost]
+		public async Task<ActionResult> Creajax(string auteur, string contenu, int articleId)
+		{
+			Commentaire commentaire = new Commentaire() { ArticleId = articleId, Auteur = auteur, Contenu = contenu };
 
-        //    // Retourner une réponse JSON
-        //    return Json(new { success = true });
-        //}
-        [HttpPost]
+			if (await _CommentaireBusiness.Create(commentaire))
+			{
+				TempData["Message"] = "Commentaire Ajouté en Ajax";
+			}
+
+			var coms = (await _CommentaireBusiness.ReadAll(articleId));
+
+			return PartialView("_DisplayCommentairesPartial", coms);
+		}
+		[HttpPost]
         public async Task<IActionResult> DeleteFullAjax(int commentaireId)
         {
             bool res = false;

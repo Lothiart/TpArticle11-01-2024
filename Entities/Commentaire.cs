@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
@@ -9,17 +10,17 @@ namespace Entities
 
         
         [Required]
-        [StringLength(20, ErrorMessage = "Max 20 caractères")]
+       
         public string Auteur { get; set; }
 
         public DateTime DateCreation { get; set; }
 
         public DateTime DateModification { get; set; }
 
-        [StringLength(20,ErrorMessage = "Max 100 caractères")]
+        [StringLength(100,ErrorMessage = "Max 100 caractères")]
         public string Contenu { get; set; }
 
-
+        [ForeignKey("Article")]
         public int ArticleId { get; set; }
     }
 }

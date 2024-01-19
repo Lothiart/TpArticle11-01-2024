@@ -1,80 +1,19 @@
 ﻿@model ArticleViewModel
-
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
-
-<form>
-    
-   
-        <label>Id :</label>@Model.Article.Id<br />
-        <label>Thème :</label>@Model.Article.Theme<br />
-            <label>Auteur :</label>@Model.Article.Auteur<br />
-    <label>Date de creation :</label>@Model.Article.DateCreation<br />
-    <label>Date de modification :</label>@Model.Article.DateModification<br />
-    <label>Contenu :</label>@Model.Article.Contenu<br />
-        
-        <br />
-            <button asp-action="Update" asp-route-Id="@Model.Article.Id">Update</button>
-
-        
-        
-    
-</form>
+<h1>Détails de l'Article @Model.Article.Id </h1>
 
 
 
-@{
-    ViewData["Title"] = "Read";
-}
 
-<h1>Commentaires :</h1>
 
-<p>
-    <a asp-action="Create" asp-route-ArticleId="@Model.Article.Id" asp-controller="Commentaire">Créer un nouveau</a>
-</p>
-<form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Auteur</th>
-                <th>DateCreation</th>
-                <th>DateModif</th>
-                <th>Contenu</th>
-            </tr>
-        </thead>
 
-        <tbody>
-            @foreach (var item in Model.Comments)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Auteur)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateCreation)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateModification)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Contenu)
-                    </td>
-                    <td>
-                        <button asp-action="Update" asp-route-Id="@item.Id" asp-route-ArticleId="@Model.Article.Id" asp-controller="Commentaire">Update</button>
 
-                        <button asp-action="Delete" asp-route-Id="@item.Id" asp-controller="Commentaire">Delete</button>
-                        <button asp-action="Details" asp-route-Id="@item.Id" asp-controller="Commentaire">Details</button>
 
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</form>
+
+
+<partial name="_ReadArticlePartial" model="@Model" />
+
+
+
+
+
+

@@ -1,65 +1,56 @@
-﻿@model List<Commentaire>
-
-<div id="divContentMessages">
-	<p class="text-success">@TempData["Message"] </p>
-	<table class="table table-striped table-sm table-bordered text-center">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Auteur</th>
-				<th>Contenu</th>
-				<th>DateCre</th>
-				<th>DateMod</th>
-			</tr>
-		</thead>
-		<tbody id="contentMessage">
-			@foreach (var commentaire in Model)
-			{
-				<tr>
-					<td>@commentaire.Id</td>
-					<td>@commentaire.Auteur</td>
-					<td>@commentaire.DateCreation</td>
-                    <td>@commentaire.DateModification</td>
-                    <td>@commentaire.Contenu</td>
-					<td>
-						<a asp-controller="Commentaire" asp-action="Read" asp-route-id="@commentaire.Id">Detail</a>
-					</td>
-					<td>
-						<a asp-controller="Commentaire" asp-action="Delete" asp-route-id="@commentaire.Id">Supprimer</a>
-					</td>
-					<td>
-						<button onclick="SupprimerFullAjax(this)">DelFullAjax</button>
-					</td>
-
-					<td>
-						<button onclick="SupprimerAspAjax(@commentaire.Id)">DelAspAjax</button>
-					</td>
-
-				</tr>
-			}
-		</tbody>
-	</table>
-</div>
-
-<script>
-
-	function SupprimerFullAjax(commentaire) {
-
-		var row = commentaire.parentNode.parentNode;
-		var commentaireId = row.cells[0].innerText;
-
-		$.post('/Commentaire/DeleteFullAjax', { commentaireId: commentaireId }, function (isDelete) {
-			if (isDelete == true)
-				row.parentNode.removeChild(row);
-		});
-	}
-
-	function SupprimerAspAjax(commentaireId) {
-
-		$.post('/Commentaire/DeleteAspAjax', { commentaireId: commentaireId }, function (data) {
-				$('#divContentMessages').html(data);
-		});
-	}
+﻿@model ArticleViewModel
+@{
+    ViewData["Title"] = "Read";
+}
 
 
-</script>
+
+<p>
+    <a asp-action="Create" asp-route-ArticleId="@Model.Article.Id" asp-controller="Commentaire">Créer un nouveau</a>
+</p>
+<form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Auteur</th>
+                <th>DateCreation</th>
+                <th>DateModif</th>
+                <th>Contenu</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.Comments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Auteur)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCreation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateModification)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contenu)
+                    </td>
+                    <td>
+                        <button asp-action="Update" asp-route-Id="@item.Id" asp-route-ArticleId="@Model.Article.Id" asp-controller="Commentaire">Update</button>
+
+                        <button asp-action="Delete" asp-route-Id="@item.Id" asp-controller="Commentaire">Delete</button>
+                        <button asp-action="Details" asp-route-Id="@item.Id" asp-controller="Commentaire">Details</button>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+<a asp-action="Read" asp-controller="Article">Retour</a>
+
+

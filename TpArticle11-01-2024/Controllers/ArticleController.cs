@@ -109,33 +109,50 @@ namespace TpArticle11_01_2024.Controllers
             await _articleBusiness.Delete(id);
             return RedirectToAction("Read");
         }
-        //public Task<ActionResult> Search()
-        //{
-        //    // Obtenir la chaîne de recherche
-        //    var searchTerm = Request.Query["searchTerm"];
+        public async Task<IActionResult> SearchAjax(string str)
+        {
+            return PartialView("_displayArticlesPartial", await _articleBusiness.Search(str));
+        }
+        [HttpGet]
+        public async Task<IActionResult> Recherche(string str = "", int pageNumber = 1)
+        {
+            TempData["Page"] = pageNumber;
 
-        //    // Créer une requête de recherche
-        //    var query = _articleBusiness.Where(article =>
-        //        article.Theme.Contains(searchTerm)
-        //        || article.Auteur.Contains(searchTerm)
-        //        || article.Contenu.Contains(searchTerm));
+            var arts = await _articleBusiness.ReadAll();
 
-        //    // Exécuter la requête et obtenir les résultats
-        //    var articles = query.ToList();
+            if (str == "")
+            {
 
-        //    // Retourner les résultats
-        //    return View(articles);
-        //}
-        //public IActionResult Save(Article article)
-        //{
-        //    // Enregistrer l'article dans la base de données
-        //    _articleBusiness.CreateArticle(article);
-            
+            }
+            else
+            {
+                arts = await _articleBusiness.Search(str);
 
-        //    // Retourner une réponse JSON
-        //    return Json(new { success = true });
-        //}
-        
+            }
+
+
+            return View(arts.OrderBy(a => a.DateCreation).ToList());
+        }
+        [HttpPost]
+        public async Task<IActionResult> RechercheAjax(string str = "", int pageNumber = 1)
+        {
+            TempData["Page"] = pageNumber;
+
+            var arts = await _articleBusiness.ReadAll();
+
+            if (str == "")
+            {
+
+            }
+            else
+            {
+                arts = await _articleBusiness.Search(str);
+
+            }
+
+
+            return PartialView("_SearchArticlesPartial", arts.OrderBy(a => a.DateCreation).ToList());
+        }
 
 
     }

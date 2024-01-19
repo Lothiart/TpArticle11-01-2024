@@ -26,7 +26,7 @@ namespace Repositories
             //{
                 
                 
-                return await _context.Articles.FirstOrDefaultAsync(a => a.Id == id);
+                return await _context.Articles.Include(a => a.Commentaires).FirstOrDefaultAsync(a => a.Id == id);
                 
 
 
@@ -38,20 +38,20 @@ namespace Repositories
         {
            
             
-            return await _context.Articles.ToListAsync();
+            return await _context.Articles.Include(a => a.Commentaires).ToListAsync();
             
         }
         public async Task<bool> Create(Article article)
         {
-            //article.Id = _context.Articles.Count() + 1;
+            
             try { 
-              article.DateCreation = DateTime.Now;
+              
               article.DateModification = DateTime.Now;
              await _context.Articles.AddAsync(article);
             await _context.SaveChangesAsync();
             return true;
             }catch
-            (Exception ex)
+            (Exception)
             {
                 return false; 
             }
@@ -61,7 +61,7 @@ namespace Repositories
         {
             try
             {
-                var articleToEdit = await _context.Articles.FirstOrDefaultAsync(a => a.Id == article.Id);
+                var articleToEdit = await Read(article.Id);
                 articleToEdit.DateModification = DateTime.Now;
                 articleToEdit.Contenu = article.Contenu;
                 articleToEdit.Theme = article.Theme;
@@ -69,7 +69,7 @@ namespace Repositories
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -81,18 +81,24 @@ namespace Repositories
             await _context.SaveChangesAsync();
             return true;
         }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
 }
 
-        //public article Rechercher(int id)
-        //{
-
-
-        //}
-
+        public async Task<List<Article>> Search(string str)
+        {
+            //return await _context.Articles.Where(a => a.Auteur.Contains(name)|| a.Theme.Contains(name)).ToListAsync();
+            return await _context.Articles
+        .Where(a => a.Auteur.Contains(str) || a.Theme.Contains(str) || a.Contenu.Contains(str) || a.Commentaires.Any(c => c.Auteur.Contains(str) || c.Contenu.Contains(str)))
+        .Include(a => a.Commentaires)
+        .ToListAsync();
+        }
+        public async Task<List<Article>> GetAllAsync()
+        {
+            return await _context.Articles.ToListAsync();
+        }
     }
 
 

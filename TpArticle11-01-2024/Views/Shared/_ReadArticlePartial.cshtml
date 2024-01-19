@@ -1,0 +1,65 @@
+﻿@model ArticleViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+<form>
+
+
+    <label>Id :</label>@Model.Article.Id<br />
+    <label>Thème :</label>@Model.Article.Theme<br />
+    <label>Auteur :</label>@Model.Article.Auteur<br />
+    <label>Date de creation :</label>@Model.Article.DateCreation<br />
+    <label>Date de modification :</label>@Model.Article.DateModification<br />
+    <label>Contenu :</label>@Model.Article.Contenu<br />
+
+    <br />
+    <button asp-action="Update" asp-route-Id="@Model.Article.Id">Update</button>
+
+    <button asp-action="Delete" asp-route-Id="@Model.Article.Id">Delete</button>
+
+
+
+</form>
+
+<partial name="_DisplayCommentairesPartial" />
+
+<br /><br />
+<partial name="_formCommentairePartial" model="new Commentaire(){ArticleId = Model.Article.Id}" />
+
+<br />
+
+<form id="formAdd">
+	<input id="ArticleId" value="@Model.Article.Id" type="hidden" />
+	<label>Auteur :</label>
+	<input id="AuteurAjax" type="text" />
+	<label>Contenu :</label>
+	<input id="ContenuAjax" type="text" />
+
+	<button>Ajouter Ajax</button>
+
+</form>
+
+
+<script>
+
+
+	$(function () {
+		$('#formAdd').submit(function (e) {
+			$.post('/Commentaire/CreAjax', { articleId: $('#ArticleId').val(), auteur: $('#AuteurAjax').val(), contenu: $('#ContenuAjax').val() }, function (data) {
+
+				//alert(data);
+				$('#divContentMessages').html(data);
+			});
+
+			e.preventDefault();
+		});
+
+	});
+
+
+</script>
+
