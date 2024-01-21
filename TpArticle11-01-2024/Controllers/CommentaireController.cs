@@ -160,6 +160,7 @@ namespace TpArticle11_01_2024.Controllers
 
             return PartialView("_DisplayCommentairesPartial", coms);
         }
+		
 
-    }
+	}
 }

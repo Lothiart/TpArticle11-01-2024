@@ -44,13 +44,42 @@
 
                         <button asp-action="Delete" asp-route-Id="@item.Id" asp-controller="Commentaire">Delete</button>
                         <button asp-action="Details" asp-route-Id="@item.Id" asp-controller="Commentaire">Details</button>
-
                     </td>
+                    <td>
+                        <button onclick="SupprimerFullAjax(this)">DelFullAjax</button>
+                    </td>
+
+                    <td>
+                        <button onclick="SupprimerAspAjax(@item.Id)">DelAspAjax</button>
+                    </td>
+                    
                 </tr>
             }
         </tbody>
     </table>
 </form>
+<script>
+
+    function SupprimerFullAjax(commentaire) {
+
+        var row = commentaire.parentNode.parentNode;
+        var commentaireId = row.cells[0].innerText;
+
+        $.post('/Commentaire/DeleteFullAjax', { commentaireId: commentaireId }, function (isDelete) {
+            if (isDelete == true)
+                row.parentNode.removeChild(row);
+        });
+    }
+
+    function SupprimerAspAjax(commentaireId) {
+
+        $.post('/Commentaire/DeleteAspAjax', { commentaireId: commentaireId }, function (data) {
+            $('#divContentMessages').html(data);
+        });
+    }
+
+
+</script>
 <a asp-action="Read" asp-controller="Article">Retour</a>
 
 
